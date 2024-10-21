@@ -4,8 +4,13 @@
 
 
 void setup() {
-	analogWrite(5,240);
+	//analogWrite(5,240);
+	pinMode(5,OUTPUT);
+	digitalWrite(5,HIGH);
 	Serial.begin(115200);
+
+
+	/*
 	Serial.println("QSPI LCD example start");
 	Serial.println("Create QSPI LCD bus");
 	ESP_PanelBus_QSPI *panel_bus = new ESP_PanelBus_QSPI(	ESP_PANEL_LCD_SPI_IO_CS,
@@ -17,13 +22,16 @@ void setup() {
 	panel_bus->configQspiFreqHz(ESP_PANEL_LCD_SPI_CLK_HZ);
 	panel_bus->begin();
 	ESP_PanelLcd *lcd = new ESP_PanelLcd_ST77916(panel_bus,ESP_PANEL_LCD_COLOR_BITS,ESP_PANEL_LCD_IO_RST);
-
 	lcd->init();
 	lcd->begin();
 	lcd->displayOn();
-
 	lcd->colorBarTest(ESP_PANEL_LCD_WIDTH,ESP_PANEL_LCD_HEIGHT);
+	*/
 
+	ESP_Panel *panel = new ESP_Panel();
+    panel->init();
+	panel->begin();
+	(panel->getLcd())->colorBarTest(ESP_PANEL_LCD_WIDTH,ESP_PANEL_LCD_HEIGHT);
 
 }
 
