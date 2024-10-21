@@ -33,5 +33,7 @@ void loop() {
 	//Serial.println(millis());
 	delay(500);
 	analogWrite(5,50);*/
+	//int val = 128 + 127*sin(2*PI*millis()/5000);
+	//analogWrite(5,val);
 	delay(5);
 }
