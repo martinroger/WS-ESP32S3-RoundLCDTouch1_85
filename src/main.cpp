@@ -4,7 +4,7 @@
 
 
 void setup() {
-	analogWrite(5,200);
+	analogWrite(5,240);
 	Serial.begin(115200);
 	Serial.println("QSPI LCD example start");
 	Serial.println("Create QSPI LCD bus");
@@ -24,12 +24,14 @@ void setup() {
 
 	lcd->colorBarTest(ESP_PANEL_LCD_WIDTH,ESP_PANEL_LCD_HEIGHT);
 
+
 }
 
 void loop() {
-	delay(500);
+	/*delay(500);
 	analogWrite(5,200);
 	//Serial.println(millis());
 	delay(500);
-	analogWrite(5,50);
+	analogWrite(5,50);*/
+	delay(5);
 }
