@@ -4,7 +4,8 @@
 
 ESP_Panel *panel = nullptr;
 ESP_PanelLcd *lcd = nullptr;
-ESP_PanelTouch *touch = nullptr;
+//ESP_PanelTouch *touch = nullptr;
+ESP_IOExpander *expander = nullptr;
 
 
 IRAM_ATTR bool onTouchInterruptCallback(void *user_data)
@@ -44,18 +45,46 @@ void setup() {
     panel->init();
 	panel->begin();
 	lcd = panel->getLcd();
-	touch = panel->getTouch();
-	if (touch != nullptr) 
-	{
-		touch->attachInterruptCallback(onTouchInterruptCallback, NULL);
-	}
+	// touch = panel->getTouch();
+	// if (touch != nullptr) 
+	// {
+	// 	touch->attachInterruptCallback(onTouchInterruptCallback, NULL);
+	// }
 	Serial.println("Doing BGR test");
 	lcd->colorBarTest(panel->getLcdWidth(),panel->getLcdHeight());
+	expander = panel->getExpander();
+	expander->printStatus();
+	expander->pinMode(0, OUTPUT);
+    expander->pinMode(1, OUTPUT);
+    expander->multiPinMode(IO_EXPANDER_PIN_NUM_2 | IO_EXPANDER_PIN_NUM_3, OUTPUT);
+
+    Serial.println("Set pint 0-3 to output mode:");
+    expander->printStatus();
+
+    expander->digitalWrite(0, LOW);
+    expander->digitalWrite(1, LOW);
+    expander->multiDigitalWrite(IO_EXPANDER_PIN_NUM_2 | IO_EXPANDER_PIN_NUM_3, LOW);
+
+    Serial.println("Set pint 0-3 to low level:");
+    expander->printStatus();
+
+    expander->pinMode(0, INPUT);
+    expander->pinMode(1, INPUT);
+    expander->multiPinMode(IO_EXPANDER_PIN_NUM_2 | IO_EXPANDER_PIN_NUM_3, INPUT);
+
+    Serial.println("Set pint 0-3 to input mode:");
+    expander->printStatus();
+
+	expander->pinMode(6,OUTPUT);
 
 
 }
 
 void loop() {
+	static bool val = HIGH;
+	expander->digitalWrite(6,val);
+	val = !val;
+	delay(1000);
 	// if (touch != nullptr)
 	// {
 	// 	ESP_PanelTouchPoint point[1];
