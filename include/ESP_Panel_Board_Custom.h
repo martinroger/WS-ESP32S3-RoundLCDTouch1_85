@@ -216,7 +216,7 @@
 //////////////////////////// Please update the following macros to configure the touch panel ///////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /* Set to 1 when using an touch panel */
-#define ESP_PANEL_USE_TOUCH         (1)         // 0/1
+#define ESP_PANEL_USE_TOUCH         (0)         // 0/1
 #if ESP_PANEL_USE_TOUCH
 /**
  * Touch controller name. Choose one of the following:
@@ -317,7 +317,7 @@
 ///////////////////////////// Please update the following macros to configure the IO expander //////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /* Set to 0 if not using IO Expander */
-#define ESP_PANEL_USE_EXPANDER          (0)         // 0/1
+#define ESP_PANEL_USE_EXPANDER          (1)         // 0/1
 #if ESP_PANEL_USE_EXPANDER
 /**
  * IO expander name. Choose one of the following:
@@ -342,10 +342,10 @@
 #if !ESP_PANEL_EXPANDER_SKIP_INIT_HOST
     #define ESP_PANEL_EXPANDER_I2C_CLK_HZ       (400 * 1000)
                                                         // Typically set to 400K
-    #define ESP_PANEL_EXPANDER_I2C_SCL_PULLUP   (1)     // 0/1
-    #define ESP_PANEL_EXPANDER_I2C_SDA_PULLUP   (1)     // 0/1
-    #define ESP_PANEL_EXPANDER_I2C_IO_SCL       (18)
-    #define ESP_PANEL_EXPANDER_I2C_IO_SDA       (8)
+    #define ESP_PANEL_EXPANDER_I2C_SCL_PULLUP   (0)     // 0/1
+    #define ESP_PANEL_EXPANDER_I2C_SDA_PULLUP   (0)     // 0/1
+    #define ESP_PANEL_EXPANDER_I2C_IO_SCL       (10)
+    #define ESP_PANEL_EXPANDER_I2C_IO_SDA       (11)
 #endif
 #endif /* ESP_PANEL_USE_EXPANDER */
 

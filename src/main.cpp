@@ -1,9 +1,11 @@
 #include <Arduino.h>
 #include <ESP_Panel_Library.h>
+#include <ESP_IOExpander_Library.h>
 
 ESP_Panel *panel = nullptr;
 ESP_PanelLcd *lcd = nullptr;
 ESP_PanelTouch *touch = nullptr;
+
 
 IRAM_ATTR bool onTouchInterruptCallback(void *user_data)
 {
@@ -58,7 +60,6 @@ void loop() {
 	// {
 	// 	ESP_PanelTouchPoint point[1];
     //     int read_touch_result = touch->readPoints(point, 1, -1);
-
     //     if (read_touch_result > 0) {
     //         for (int i = 0; i < read_touch_result; i++) {
     //             Serial.printf("Touch point(%d): x %d, y %d, strength %d\n", i, point[i].x, point[i].y, point[i].strength);
