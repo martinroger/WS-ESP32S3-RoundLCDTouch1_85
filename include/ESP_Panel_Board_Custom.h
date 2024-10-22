@@ -216,7 +216,7 @@
 //////////////////////////// Please update the following macros to configure the touch panel ///////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /* Set to 1 when using an touch panel */
-#define ESP_PANEL_USE_TOUCH         (0)         // 0/1
+#define ESP_PANEL_USE_TOUCH         (1)         // 0/1
 #if ESP_PANEL_USE_TOUCH
 /**
  * Touch controller name. Choose one of the following:
@@ -227,7 +227,7 @@
  *      - TT21100
  *      - XPT2046
  */
-#define ESP_PANEL_TOUCH_NAME        TT21100
+#define ESP_PANEL_TOUCH_NAME        CST816S
 
 /* Touch resolution in pixels */
 #define ESP_PANEL_TOUCH_H_RES       (ESP_PANEL_LCD_WIDTH)   // Typically set to the same value as the width of LCD
@@ -258,8 +258,8 @@
                                                     // Typically set to 400K
     #define ESP_PANEL_TOUCH_I2C_SCL_PULLUP  (1)     // 0/1
     #define ESP_PANEL_TOUCH_I2C_SDA_PULLUP  (1)     // 0/1
-    #define ESP_PANEL_TOUCH_I2C_IO_SCL      (18)
-    #define ESP_PANEL_TOUCH_I2C_IO_SDA      (8)
+    #define ESP_PANEL_TOUCH_I2C_IO_SCL      (3)
+    #define ESP_PANEL_TOUCH_I2C_IO_SDA      (1)
 #endif
 
 #elif ESP_PANEL_TOUCH_BUS_TYPE == ESP_PANEL_BUS_TYPE_SPI
@@ -291,7 +291,7 @@
                                                     // For GT911, the RST pin is also used to configure the I2C address
 #define ESP_PANEL_TOUCH_RST_LEVEL       (0)         // Active level. 0: low level, 1: high level
 /* Interrupt pin */
-#define ESP_PANEL_TOUCH_IO_INT          (-1)        // IO num of INT pin, set to -1 if not use
+#define ESP_PANEL_TOUCH_IO_INT          (4)        // IO num of INT pin, set to -1 if not use
                                                     // For GT911, the INT pin is also used to configure the I2C address
 #define ESP_PANEL_TOUCH_INT_LEVEL       (0)         // Active level. 0: low level, 1: high level
 

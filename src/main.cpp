@@ -1,6 +1,16 @@
 #include <Arduino.h>
 #include <ESP_Panel_Library.h>
 
+ESP_Panel *panel = nullptr;
+ESP_PanelLcd *lcd = nullptr;
+ESP_PanelTouch *touch = nullptr;
+
+IRAM_ATTR bool onTouchInterruptCallback(void *user_data)
+{
+    esp_rom_printf("Touch interrupt callback\n");
+
+    return false;
+}
 
 
 void setup() {
@@ -27,15 +37,40 @@ void setup() {
 	lcd->displayOn();
 	lcd->colorBarTest(ESP_PANEL_LCD_WIDTH,ESP_PANEL_LCD_HEIGHT);
 	*/
-
-	ESP_Panel *panel = new ESP_Panel();
+	Serial.println("Start panel");
+	panel = new ESP_Panel();
     panel->init();
 	panel->begin();
-	(panel->getLcd())->colorBarTest(ESP_PANEL_LCD_WIDTH,ESP_PANEL_LCD_HEIGHT);
+	lcd = panel->getLcd();
+	touch = panel->getTouch();
+	if (touch != nullptr) 
+	{
+		touch->attachInterruptCallback(onTouchInterruptCallback, NULL);
+	}
+	Serial.println("Doing BGR test");
+	lcd->colorBarTest(panel->getLcdWidth(),panel->getLcdHeight());
+
 
 }
 
 void loop() {
+	// if (touch != nullptr)
+	// {
+	// 	ESP_PanelTouchPoint point[1];
+    //     int read_touch_result = touch->readPoints(point, 1, -1);
+
+    //     if (read_touch_result > 0) {
+    //         for (int i = 0; i < read_touch_result; i++) {
+    //             Serial.printf("Touch point(%d): x %d, y %d, strength %d\n", i, point[i].x, point[i].y, point[i].strength);
+    //         }
+    //     } else if (read_touch_result < 0) {
+    //         Serial.println("Read touch point failed");
+    //     }
+    //     // Delay for a while to avoid reading too frequently if the interrupt is not enabled
+    //     if (!touch->isInterruptEnabled()) {
+    //         delay(30);
+    //     }
+	// }
 	/*delay(500);
 	analogWrite(5,200);
 	//Serial.println(millis());
