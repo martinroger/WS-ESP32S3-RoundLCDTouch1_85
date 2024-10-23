@@ -1,57 +1,18 @@
 #include <Arduino.h>
 #include <ESP_Panel_Library.h>
 #include <ESP_IOExpander_Library.h>
-#pragma region TOUCH
-#include <Wire.h>
-#include "TouchDrvCSTXXX.hpp"
-
-#ifndef SENSOR_SDA
-#define SENSOR_SDA  1
-#endif
-
-#ifndef SENSOR_SCL
-#define SENSOR_SCL  3
-#endif
-
-#ifndef SENSOR_IRQ
-#define SENSOR_IRQ  4
-#endif
-
-#ifndef SENSOR_RST
-#define SENSOR_RST  -1
-#endif
-
-TouchDrvCSTXXX touch;
-int16_t x[5], y[5];
-
-void scanDevices(void)
-{
-    byte error, address;
-    int nDevices = 0;
-    Serial.println("Scanning for I2C devices ...");
-    for (address = 0x01; address < 0x7f; address++) {
-        Wire.beginTransmission(address);
-        error = Wire.endTransmission();
-        if (error == 0) {
-            Serial.printf("I2C device found at address 0x%02X\n", address);
-            nDevices++;
-        } else if (error != 2) {
-            Serial.printf("Error %d at address 0x%02X\n", error, address);
-        }
-    }
-    if (nDevices == 0) {
-        Serial.println("No I2C devices found");
-    }
-}
-
-#pragma endregion
 
 ESP_Panel *panel = nullptr;
 ESP_PanelLcd *lcd = nullptr;
-//ESP_PanelTouch *touch = nullptr;
+ESP_PanelTouch *touch = nullptr;
 ESP_IOExpander *expander = nullptr;
 
+IRAM_ATTR bool onTouchInterruptCallback(void *user_data)
+{
+    esp_rom_printf("Touch interrupt callback\n");
 
+    return false;
+}
 
 void setup() {
 	analogWrite(5,200);
@@ -85,7 +46,7 @@ void setup() {
     panel->init();
 	panel->begin();
 	lcd = panel->getLcd();
-	// touch = panel->getTouch();
+	touch = panel->getTouch();
 	// if (touch != nullptr) 
 	// {
 	// 	touch->attachInterruptCallback(onTouchInterruptCallback, NULL);
@@ -94,6 +55,7 @@ void setup() {
 	lcd->colorBarTest(panel->getLcdWidth(),panel->getLcdHeight());
 	expander = panel->getExpander();
 	expander->printStatus();
+	touch->attachInterruptCallback(onTouchInterruptCallback, NULL);
 	/*
 	expander->pinMode(0, OUTPUT);
     expander->pinMode(1, OUTPUT);
@@ -116,37 +78,7 @@ void setup() {
     Serial.println("Set pint 0-3 to input mode:");
     expander->printStatus();
 	*/
-	expander->pinMode(6,OUTPUT);
 	//Serial.end();
-
-	#pragma region TOUCH SETUP
-		uint8_t address = 0xFF;
-		Wire.begin(SENSOR_SDA, SENSOR_SCL,400000);
-		scanDevices();
-
-		Wire.beginTransmission(CST816_SLAVE_ADDRESS);
-		if (Wire.endTransmission() == 0) {
-			address = CST816_SLAVE_ADDRESS;
-		}
-		Wire.beginTransmission(CST226SE_SLAVE_ADDRESS);
-		if (Wire.endTransmission() == 0) {
-			address = CST226SE_SLAVE_ADDRESS;
-		}
-		Wire.beginTransmission(CST328_SLAVE_ADDRESS);
-		if (Wire.endTransmission() == 0) {
-			address = CST328_SLAVE_ADDRESS;
-		}
-		while (address == 0xFF) {
-			Serial.println("Could't find touch chip!"); delay(1000);
-		}
-
-		touch.setPins(SENSOR_RST, SENSOR_IRQ);
-		touch.begin(Wire, address, SENSOR_SDA, SENSOR_SCL);
-
-
-		Serial.print("Model :"); Serial.println(touch.getModelName());
-
-	#pragma endregion
 
 }
 
@@ -179,22 +111,5 @@ void loop() {
 	analogWrite(5,50);*/
 	//int val = 128 + 127*sin(2*PI*millis()/5000);
 	//analogWrite(5,val);
-	uint8_t touched = touch.getPoint(x, y, touch.getSupportTouchPoint());
-    if (touched) {
-        for (int i = 0; i < touched; ++i) {
-            Serial.print("X[");
-            Serial.print(i);
-            Serial.print("]:");
-            Serial.print(x[i]);
-            Serial.print(" ");
-            Serial.print(" Y[");
-            Serial.print(i);
-            Serial.print("]:");
-            Serial.print(y[i]);
-            Serial.print(" ");
-        }
-        Serial.println();
-    }
-
-    delay(5);
+	
 }

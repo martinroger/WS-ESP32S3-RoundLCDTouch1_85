@@ -216,7 +216,7 @@
 //////////////////////////// Please update the following macros to configure the touch panel ///////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /* Set to 1 when using an touch panel */
-#define ESP_PANEL_USE_TOUCH         (0)         // 0/1
+#define ESP_PANEL_USE_TOUCH         (1)         // 0/1
 #if ESP_PANEL_USE_TOUCH
 /**
  * Touch controller name. Choose one of the following:
@@ -248,7 +248,7 @@
 /* Touch panel bus parameters */
 #if ESP_PANEL_TOUCH_BUS_TYPE == ESP_PANEL_BUS_TYPE_I2C
 
-    #define ESP_PANEL_TOUCH_BUS_HOST_ID     (0)     // Typically set to 0
+    #define ESP_PANEL_TOUCH_BUS_HOST_ID     (1)     // Typically set to 0
     #define ESP_PANEL_TOUCH_I2C_ADDRESS     (0)     // Typically set to 0 to use the default address.
                                                     // - For touchs with only one address, set to 0
                                                     // - For touchs with multiple addresses, set to 0 or the address
@@ -354,7 +354,14 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // #define ESP_PANEL_BEGIN_START_FUNCTION( panel )
 // #define ESP_PANEL_BEGIN_EXPANDER_START_FUNCTION( panel )
-// #define ESP_PANEL_BEGIN_EXPANDER_END_FUNCTION( panel )
+ #define ESP_PANEL_BEGIN_EXPANDER_END_FUNCTION( panel )     \
+{  \
+    _expander_ptr->pinMode(0,OUTPUT); \
+    _expander_ptr->digitalWrite(0,LOW); \
+    vTaskDelay(pdMS_TO_TICKS(30));  \
+    _expander_ptr->digitalWrite(0,HIGH); \
+    vTaskDelay(pdMS_TO_TICKS(50)); \
+}
 // #define ESP_PANEL_BEGIN_LCD_START_FUNCTION( panel )
 // #define ESP_PANEL_BEGIN_LCD_END_FUNCTION( panel )
 // #define ESP_PANEL_BEGIN_TOUCH_START_FUNCTION( panel )
