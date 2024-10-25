@@ -6,6 +6,7 @@ ESP_Panel *panel = nullptr;
 ESP_PanelLcd *lcd = nullptr;
 ESP_PanelTouch *touch = nullptr;
 ESP_IOExpander *expander = nullptr;
+ESP_PanelBacklight *backLight = nullptr;
 
 IRAM_ATTR bool onTouchInterruptCallback(void *user_data)
 {
@@ -47,69 +48,17 @@ void setup() {
 	panel->begin();
 	lcd = panel->getLcd();
 	touch = panel->getTouch();
-	// if (touch != nullptr) 
-	// {
-	// 	touch->attachInterruptCallback(onTouchInterruptCallback, NULL);
-	// }
+	backLight = panel->getBacklight();
+	backLight->setBrightness(80);
 	Serial.println("Doing BGR test");
 	lcd->colorBarTest(panel->getLcdWidth(),panel->getLcdHeight());
 	expander = panel->getExpander();
 	expander->printStatus();
 	touch->attachInterruptCallback(onTouchInterruptCallback, NULL);
-	/*
-	expander->pinMode(0, OUTPUT);
-    expander->pinMode(1, OUTPUT);
-    expander->multiPinMode(IO_EXPANDER_PIN_NUM_2 | IO_EXPANDER_PIN_NUM_3, OUTPUT);
-
-    Serial.println("Set pint 0-3 to output mode:");
-    expander->printStatus();
-
-    expander->digitalWrite(0, LOW);
-    expander->digitalWrite(1, LOW);
-    expander->multiDigitalWrite(IO_EXPANDER_PIN_NUM_2 | IO_EXPANDER_PIN_NUM_3, LOW);
-
-    Serial.println("Set pint 0-3 to low level:");
-    expander->printStatus();
-
-    expander->pinMode(0, INPUT);
-    expander->pinMode(1, INPUT);
-    expander->multiPinMode(IO_EXPANDER_PIN_NUM_2 | IO_EXPANDER_PIN_NUM_3, INPUT);
-
-    Serial.println("Set pint 0-3 to input mode:");
-    expander->printStatus();
-	*/
-	//Serial.end();
 
 }
 
 void loop() {
-	/* static bool val = HIGH;
-	expander->digitalWrite(6,val);
-	val = !val;
-	analogWrite(5,200);
-	delay(1000); */
-	// if (touch != nullptr)
-	// {
-	// 	ESP_PanelTouchPoint point[1];
-    //     int read_touch_result = touch->readPoints(point, 1, -1);
-    //     if (read_touch_result > 0) {
-    //         for (int i = 0; i < read_touch_result; i++) {
-    //             Serial.printf("Touch point(%d): x %d, y %d, strength %d\n", i, point[i].x, point[i].y, point[i].strength);
-    //         }
-    //     } else if (read_touch_result < 0) {
-    //         Serial.println("Read touch point failed");
-    //     }
-    //     // Delay for a while to avoid reading too frequently if the interrupt is not enabled
-    //     if (!touch->isInterruptEnabled()) {
-    //         delay(30);
-    //     }
-	// }
-	/*delay(500);
-	analogWrite(5,200);
-	//Serial.println(millis());
-	delay(500);
-	analogWrite(5,50);*/
-	//int val = 128 + 127*sin(2*PI*millis()/5000);
-	//analogWrite(5,val);
-	
+
+	delay(5);
 }
