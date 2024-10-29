@@ -8,12 +8,12 @@ ESP_PanelTouch *touch = nullptr;
 ESP_IOExpander *expander = nullptr;
 ESP_PanelBacklight *backLight = nullptr;
 
-IRAM_ATTR bool onTouchInterruptCallback(void *user_data)
-{
-    esp_rom_printf("Touch interrupt callback\n");
+// IRAM_ATTR bool onTouchInterruptCallback(void *user_data)
+// {
+//     esp_rom_printf("Touch interrupt callback\n");
 
-    return false;
-}
+//     return false;
+// }
 
 void setup() {
 	// analogWrite(5,200);
@@ -48,17 +48,33 @@ void setup() {
 	panel->begin();
 	lcd = panel->getLcd();
 	touch = panel->getTouch();
-	backLight = panel->getBacklight();
-	backLight->setBrightness(100);
+	// backLight = panel->getBacklight();
+	// backLight->setBrightness(50);
 	Serial.println("Doing BGR test");
 	lcd->colorBarTest(panel->getLcdWidth(),panel->getLcdHeight());
 	expander = panel->getExpander();
 	expander->printStatus();
-	touch->attachInterruptCallback(onTouchInterruptCallback, NULL);
+	expander->pinMode(1,OUTPUT);
+	pinMode(6,OUTPUT);
 
+	//touch->attachInterruptCallback(onTouchInterruptCallback, NULL);
+
+	// backLight->setBrightness(100);
+	
 }
 
 void loop() {
-
-	delay(5);
+	//analogWrite(6,127+127*sin(millis()*2*PI/10000));
+	expander->digitalWrite(1,HIGH);
+	digitalWrite(6,HIGH);
+	delay(1000);
+	digitalWrite(6,LOW);
+	//expander->printStatus();
+	delay(2000);
+	expander->digitalWrite(1,LOW);
+	digitalWrite(6,HIGH);
+	delay(1000);
+	digitalWrite(6,LOW);
+	//expander->printStatus();
+	delay(3000);
 }
