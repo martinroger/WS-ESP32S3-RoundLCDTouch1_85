@@ -55,10 +55,15 @@ void setup() {
 	expander = panel->getExpander();
 	expander->printStatus();
 	touch->attachInterruptCallback(onTouchInterruptCallback, NULL);
-
+	expander->pinMode(1,OUTPUT);
+	expander->digitalWrite(1,LOW);
+	delay(2000);
+	// expander->digitalWrite(1,HIGH);
 }
 
 void loop() {
-
-	delay(5);
+	backLight->setBrightness(50);
+	delay(1000);
+	backLight->setBrightness(100);
+	delay(2000);
 }

@@ -144,10 +144,10 @@
 #endif
 
 #if !ESP_PANEL_LCD_BUS_SKIP_INIT_HOST
-    #define ESP_PANEL_LCD_3WIRE_SPI_IO_CS               (2)
+    #define ESP_PANEL_LCD_3WIRE_SPI_IO_CS               (42)
     #define ESP_PANEL_LCD_3WIRE_SPI_IO_SCK              (2)
     #define ESP_PANEL_LCD_3WIRE_SPI_IO_SDA              (1)
-    #define ESP_PANEL_LCD_3WIRE_SPI_CS_USE_EXPNADER     (1)     // 0/1
+    #define ESP_PANEL_LCD_3WIRE_SPI_CS_USE_EXPNADER     (0)     // 0/1
     #define ESP_PANEL_LCD_3WIRE_SPI_SCL_USE_EXPNADER    (0)     // 0/1
     #define ESP_PANEL_LCD_3WIRE_SPI_SDA_USE_EXPNADER    (0)     // 0/1
     #define ESP_PANEL_LCD_3WIRE_SPI_SCL_ACTIVE_EDGE     (0)     // 0: rising edge, 1: falling edge
@@ -323,7 +323,7 @@
 /* Interrupt pin */
 #define ESP_PANEL_TOUCH_IO_INT          (16)        // IO num of INT pin, set to -1 if not use
                                                     // For GT911, the INT pin is also used to configure the I2C address
-#define ESP_PANEL_TOUCH_INT_LEVEL       (1)         // Active level. 0: low level, 1: high level
+#define ESP_PANEL_TOUCH_INT_LEVEL       (0)         // Active level. 0: low level, 1: high level
 
 #endif /* ESP_PANEL_USE_TOUCH */
 
@@ -396,10 +396,10 @@
 // #define ESP_PANEL_BEGIN_LCD_END_FUNCTION( panel )
 #define ESP_PANEL_BEGIN_TOUCH_START_FUNCTION( panel )   \
 {  \
-    _expander_ptr->pinMode(1,OUTPUT); \
-    _expander_ptr->digitalWrite(1,LOW); \
+    _expander_ptr->pinMode(0,OUTPUT); \
+    _expander_ptr->digitalWrite(0,LOW); \
     vTaskDelay(pdMS_TO_TICKS(30));  \
-    _expander_ptr->digitalWrite(1,HIGH); \
+    _expander_ptr->digitalWrite(0,HIGH); \
     vTaskDelay(pdMS_TO_TICKS(50)); \
 }
 // #define ESP_PANEL_BEGIN_TOUCH_END_FUNCTION( panel )
