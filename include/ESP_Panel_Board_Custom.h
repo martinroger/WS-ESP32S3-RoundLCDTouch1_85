@@ -30,11 +30,11 @@
  *      - SPD2010
  *      - ST7262, ST7701, ST7789, ST7796, ST77916, ST77922
  */
-#define ESP_PANEL_LCD_NAME          ST77916
+#define ESP_PANEL_LCD_NAME          ST7789
 
 /* LCD resolution in pixels */
-#define ESP_PANEL_LCD_WIDTH         (360)
-#define ESP_PANEL_LCD_HEIGHT        (360)
+#define ESP_PANEL_LCD_WIDTH         (172)
+#define ESP_PANEL_LCD_HEIGHT        (320)
 
 /* LCD Bus Settings */
 /**
@@ -52,7 +52,7 @@
  *      - ESP_PANEL_BUS_TYPE_I80 (not ready)
  *      - ESP_PANEL_BUS_TYPE_RGB (only supported for ESP32-S3)
  */
-#define ESP_PANEL_LCD_BUS_TYPE      (ESP_PANEL_BUS_TYPE_QSPI)
+#define ESP_PANEL_LCD_BUS_TYPE      (ESP_PANEL_BUS_TYPE_SPI)
 /**
  * LCD Bus Parameters.
  *
@@ -63,15 +63,15 @@
 #if ESP_PANEL_LCD_BUS_TYPE == ESP_PANEL_BUS_TYPE_SPI
 
     #define ESP_PANEL_LCD_BUS_HOST_ID           (1)     // Typically set to 1
-    #define ESP_PANEL_LCD_SPI_IO_CS             (5)
+    #define ESP_PANEL_LCD_SPI_IO_CS             (42)
 #if !ESP_PANEL_LCD_BUS_SKIP_INIT_HOST
-    #define ESP_PANEL_LCD_SPI_IO_SCK            (7)
-    #define ESP_PANEL_LCD_SPI_IO_MOSI           (6)
+    #define ESP_PANEL_LCD_SPI_IO_SCK            (40)
+    #define ESP_PANEL_LCD_SPI_IO_MOSI           (45)
     #define ESP_PANEL_LCD_SPI_IO_MISO           (-1)    // -1 if not used
 #endif
-    #define ESP_PANEL_LCD_SPI_IO_DC             (4)
+    #define ESP_PANEL_LCD_SPI_IO_DC             (41)
     #define ESP_PANEL_LCD_SPI_MODE              (0)     // 0/1/2/3, typically set to 0
-    #define ESP_PANEL_LCD_SPI_CLK_HZ            (40 * 1000 * 1000)
+    #define ESP_PANEL_LCD_SPI_CLK_HZ            (80 * 1000 * 1000)
                                                         // Should be an integer divisor of 80M, typically set to 40M
     #define ESP_PANEL_LCD_SPI_TRANS_QUEUE_SZ    (10)    // Typically set to 10
     #define ESP_PANEL_LCD_SPI_CMD_BITS          (8)     // Typically set to 8
@@ -176,18 +176,27 @@
  *   2. Formater: ESP_PANEL_LCD_CMD_WITH_8BIT_PARAM(delay_ms, command, { data0, data1, ... }) and
  *                ESP_PANEL_LCD_CMD_WITH_NONE_PARAM(delay_ms, command)
  */
-// #define ESP_PANEL_LCD_VENDOR_INIT_CMD()                                        \
-//     {                                                                          \
-//         {0xFF, (uint8_t []){0x77, 0x01, 0x00, 0x00, 0x10}, 5, 0},              \
-//         {0xC0, (uint8_t []){0x3B, 0x00}, 2, 0},                                \
-//         {0xC1, (uint8_t []){0x0D, 0x02}, 2, 0},                                \
-//         {0x29, (uint8_t []){0x00}, 0, 120},                                    \
-//         or                                                                     \
-//         ESP_PANEL_LCD_CMD_WITH_8BIT_PARAM(0, 0xFF, {0x77, 0x01, 0x00, 0x00, 0x10}), \
-//         ESP_PANEL_LCD_CMD_WITH_8BIT_PARAM(0, 0xC0, {0x3B, 0x00}),                   \
-//         ESP_PANEL_LCD_CMD_WITH_8BIT_PARAM(0, 0xC1, {0x0D, 0x02}),                   \
-//         ESP_PANEL_LCD_CMD_WITH_NONE_PARAM(120, 0x29),                               \
-//     }
+ #define ESP_PANEL_LCD_VENDOR_INIT_CMD()                                        \
+    {                                                                           \
+        ESP_PANEL_LCD_CMD_WITH_NONE_PARAM(120, 0x11),                           \
+        {0x36, (uint8_t []){0x00}, 1, 0},                                       \
+        {0x3A, (uint8_t []){0x05}, 1, 0},                                       \
+        {0xB0, (uint8_t []){0x00, 0xE8}, 2, 0},                                 \
+        {0xB2, (uint8_t []){0x0C, 0x0C, 0x00, 0x33, 0x33}, 5, 0},               \
+        {0xB7, (uint8_t []){0x35}, 1, 0},                                       \
+        {0xBB, (uint8_t []){0x35}, 1, 0},                                       \
+        {0xC0, (uint8_t []){0x2C}, 1, 0},                                       \
+        {0xC2, (uint8_t []){0x01}, 1, 0},                                       \
+        {0xC3, (uint8_t []){0x13}, 1, 0},                                       \
+        {0xC4, (uint8_t []){0x20}, 1, 0},                                       \
+        {0xC6, (uint8_t []){0x0F}, 1, 0},                                       \
+        {0xD0, (uint8_t []){0xA4, 0xA1}, 2, 0},                                 \
+        {0xE0, (uint8_t []){0xF0, 0x00, 0x04, 0x04, 0x04, 0x05, 0x29, 0x33, 0x3E, 0x38, 0x12, 0x12, 0x28, 0x30}, 14, 0}, \
+        {0xE1, (uint8_t []){0xF0, 0x07, 0x0A, 0x0D, 0x0B, 0x07, 0x28, 0x33, 0x3E, 0x36, 0x14, 0x14, 0x29, 0x32}, 14, 0}, \
+        ESP_PANEL_LCD_CMD_WITH_NONE_PARAM(0, 0x21),                             \
+        ESP_PANEL_LCD_CMD_WITH_NONE_PARAM(120, 0x11),                           \
+        ESP_PANEL_LCD_CMD_WITH_NONE_PARAM(0, 0x29),                             \
+    }
 
 /* LCD Color Settings */
 /* LCD color depth in bits */
@@ -207,7 +216,7 @@
 
 /* LCD Other Settings */
 /* Reset pin */
-#define ESP_PANEL_LCD_IO_RST          (-1)      // IO num of RESET pin, set to -1 if not use
+#define ESP_PANEL_LCD_IO_RST          (39)      // IO num of RESET pin, set to -1 if not use
 #define ESP_PANEL_LCD_RST_LEVEL       (0)       // Active level. 0: low level, 1: high level
 
 #endif /* ESP_PANEL_USE_LCD */
@@ -216,7 +225,7 @@
 //////////////////////////// Please update the following macros to configure the touch panel ///////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /* Set to 1 when using an touch panel */
-#define ESP_PANEL_USE_TOUCH         (1)         // 0/1
+#define ESP_PANEL_USE_TOUCH         (0)         // 0/1
 #if ESP_PANEL_USE_TOUCH
 /**
  * Touch controller name. Choose one of the following:
@@ -303,7 +312,7 @@
 #define ESP_PANEL_USE_BACKLIGHT         (1)         // 0/1
 #if ESP_PANEL_USE_BACKLIGHT
 /* Backlight pin */
-#define ESP_PANEL_BACKLIGHT_IO          (5)        // IO num of backlight pin
+#define ESP_PANEL_BACKLIGHT_IO          (48)        // IO num of backlight pin
 #define ESP_PANEL_BACKLIGHT_ON_LEVEL    (1)         // 0: low level, 1: high level
 
 /* Set to 1 if you want to turn off the backlight after initializing the panel; otherwise, set it to turn on */
@@ -317,7 +326,7 @@
 ///////////////////////////// Please update the following macros to configure the IO expander //////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /* Set to 0 if not using IO Expander */
-#define ESP_PANEL_USE_EXPANDER          (1)         // 0/1
+#define ESP_PANEL_USE_EXPANDER          (0)         // 0/1
 #if ESP_PANEL_USE_EXPANDER
 /**
  * IO expander name. Choose one of the following:
@@ -354,14 +363,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // #define ESP_PANEL_BEGIN_START_FUNCTION( panel )
 // #define ESP_PANEL_BEGIN_EXPANDER_START_FUNCTION( panel )
- #define ESP_PANEL_BEGIN_EXPANDER_END_FUNCTION( panel )     \
-{  \
-    _expander_ptr->pinMode(0,OUTPUT); \
-    _expander_ptr->digitalWrite(0,LOW); \
-    vTaskDelay(pdMS_TO_TICKS(30));  \
-    _expander_ptr->digitalWrite(0,HIGH); \
-    vTaskDelay(pdMS_TO_TICKS(50)); \
-}
+// #define ESP_PANEL_BEGIN_EXPANDER_END_FUNCTION( panel )
 // #define ESP_PANEL_BEGIN_LCD_START_FUNCTION( panel )
 // #define ESP_PANEL_BEGIN_LCD_END_FUNCTION( panel )
 // #define ESP_PANEL_BEGIN_TOUCH_START_FUNCTION( panel )
