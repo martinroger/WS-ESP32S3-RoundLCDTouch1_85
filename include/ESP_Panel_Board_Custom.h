@@ -178,24 +178,25 @@
  */
  #define ESP_PANEL_LCD_VENDOR_INIT_CMD()                                        \
     {                                                                           \
-        ESP_PANEL_LCD_CMD_WITH_NONE_PARAM(120, 0x11),                           \
-        {0x36, (uint8_t []){0x00}, 1, 0},                                       \
-        {0x3A, (uint8_t []){0x05}, 1, 0},                                       \
-        {0xB0, (uint8_t []){0x00, 0xE8}, 2, 0},                                 \
-        {0xB2, (uint8_t []){0x0C, 0x0C, 0x00, 0x33, 0x33}, 5, 0},               \
-        {0xB7, (uint8_t []){0x35}, 1, 0},                                       \
-        {0xBB, (uint8_t []){0x35}, 1, 0},                                       \
-        {0xC0, (uint8_t []){0x2C}, 1, 0},                                       \
-        {0xC2, (uint8_t []){0x01}, 1, 0},                                       \
-        {0xC3, (uint8_t []){0x13}, 1, 0},                                       \
-        {0xC4, (uint8_t []){0x20}, 1, 0},                                       \
-        {0xC6, (uint8_t []){0x0F}, 1, 0},                                       \
-        {0xD0, (uint8_t []){0xA4, 0xA1}, 2, 0},                                 \
-        {0xE0, (uint8_t []){0xF0, 0x00, 0x04, 0x04, 0x04, 0x05, 0x29, 0x33, 0x3E, 0x38, 0x12, 0x12, 0x28, 0x30}, 14, 0}, \
-        {0xE1, (uint8_t []){0xF0, 0x07, 0x0A, 0x0D, 0x0B, 0x07, 0x28, 0x33, 0x3E, 0x36, 0x14, 0x14, 0x29, 0x32}, 14, 0}, \
-        ESP_PANEL_LCD_CMD_WITH_NONE_PARAM(0, 0x21),                             \
-        ESP_PANEL_LCD_CMD_WITH_NONE_PARAM(120, 0x11),                           \
-        ESP_PANEL_LCD_CMD_WITH_NONE_PARAM(0, 0x29),                             \
+        /*SLPOUT*/      ESP_PANEL_LCD_CMD_WITH_NONE_PARAM(120, 0x11),                           \
+        /*MADCTL*/      {0x36, (uint8_t []){0x00}, 1, 0},                                       \
+        /*CASET*/       {0x2A, (uint8_t []){0x00, 0x22, 0x00, 0xCD}, 4, 0}                      \
+        /*COLMOD*/      {0x3A, (uint8_t []){0x05}, 1, 0},                                       \
+        /*RAMCTRL*/     {0xB0, (uint8_t []){0x00, 0xE8}, 2, 0},                                 \
+        /*PORCTRL*/     {0xB2, (uint8_t []){0x0C, 0x0C, 0x00, 0x33, 0x33}, 5, 0},               \
+        /*GCTRL*/       {0xB7, (uint8_t []){0x35}, 1, 0},                                       \
+        /*VCOMS*/       {0xBB, (uint8_t []){0x35}, 1, 0},                                       \
+        /*LCMCTRL*/     {0xC0, (uint8_t []){0x2C}, 1, 0},                                       \
+        /*VDVVRHEN*/    {0xC2, (uint8_t []){0x01}, 1, 0},                                       \
+        /*VRHS*/        {0xC3, (uint8_t []){0x13}, 1, 0},                                       \
+        /*VDVS*/        {0xC4, (uint8_t []){0x20}, 1, 0},                                       \
+        /*FRCTRL2*/     {0xC6, (uint8_t []){0x0F}, 1, 0},                                       \
+        /*PWCTRL1*/     {0xD0, (uint8_t []){0xA4, 0xA1}, 2, 0},                                 \
+        /*PVGAMCTRL*/   {0xE0, (uint8_t []){0xF0, 0x00, 0x04, 0x04, 0x04, 0x05, 0x29, 0x33, 0x3E, 0x38, 0x12, 0x12, 0x28, 0x30}, 14, 0}, \
+        /*NVGAMCTRL*/   {0xE1, (uint8_t []){0xF0, 0x07, 0x0A, 0x0D, 0x0B, 0x07, 0x28, 0x33, 0x3E, 0x36, 0x14, 0x14, 0x29, 0x32}, 14, 0}, \
+        /*INVON*/       ESP_PANEL_LCD_CMD_WITH_NONE_PARAM(0, 0x21),                             \
+        /*SLPOUT*/      ESP_PANEL_LCD_CMD_WITH_NONE_PARAM(120, 0x11),                           \
+        /*DISPON*/      ESP_PANEL_LCD_CMD_WITH_NONE_PARAM(0, 0x29),                             \
     }
 
 /* LCD Color Settings */
