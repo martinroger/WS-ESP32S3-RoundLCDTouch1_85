@@ -206,8 +206,8 @@
  *      - 0: RGB
  *      - 1: BGR
  */
-#define ESP_PANEL_LCD_BGR_ORDER     (0)         // 0/1
-#define ESP_PANEL_LCD_INEVRT_COLOR  (0)         // 0/1
+#define ESP_PANEL_LCD_BGR_ORDER     (1)         // 0/1
+#define ESP_PANEL_LCD_INEVRT_COLOR  (1)         // 0/1
 
 /* LCD Transformation Flags */
 #define ESP_PANEL_LCD_SWAP_XY       (0)         // 0/1
